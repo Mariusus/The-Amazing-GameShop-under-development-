@@ -1,0 +1,6 @@
+<ul>
+  <li class="text" *ngFor="let game of games | async">
+    {{game.name}} -- {{game.id}}
+    <button (click)="deleteGame(game)"> Thanos Snap</button>
+  </li>
+</ul>
