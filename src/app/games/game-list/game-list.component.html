@@ -4,3 +4,11 @@
     <button (click)="deleteGame(game)"> Thanos Snap</button>
   </li>
 </ul>
+
+<form [formGroup]="gameFormGroup" (ngSubmit)="addGame()">
+  <label>
+    Game Name:
+    <input type="text" formControl="name">
+  </label>
+
+  <input type="file"(change)="uploadFile($event)"></form>
