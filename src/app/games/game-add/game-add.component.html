@@ -1,3 +1,23 @@
-<p>
-  game-add works!
-</p>
+<h2> Add New Game</h2>
+<form [formGroup]="gameFormGroup" (ngSubmit)="addGame()">
+  <label>
+    Game Name:
+    <input type="text" formControl="name">
+  </label>
+
+  <input type="file"(change)="uploadFile($event)">
+</form>
+
+<div>
+<image-cropper
+  [imageChangedEvent]="imageChangedEvent"
+format="png"
+  (imageCropped)="imageCropped($event)"
+[aspectRatio]="4 / 3"
+ [resizeToWidth]="128"
+  [onlyScaleDown]="true"
+  [cropperMinWidth]="128"
+  [roundCropper]="true"
+></image-cropper>
+<img [src]="croppedImage" style="width: 128px; height: 128px; float: left; border-radius: 50%">
+</div>

@@ -48,5 +48,9 @@ return defer(() =>
       })
     );
   }
+  getFileUrl(id: string ): Observable<any> {
+    return this.storage.ref('game-picture/' + id)
+      .getDownloadURL();
+  }
 }
 

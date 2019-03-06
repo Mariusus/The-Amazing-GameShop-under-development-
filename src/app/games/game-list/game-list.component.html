@@ -1,14 +1,9 @@
+<button routerLink="add">+</button>
 <ul>
   <li class="text" *ngFor="let game of games | async">
+    <img [src]="game.url" *ngIf="game.url" style="width: 24px; height: 24px;">
     {{game.name}} -- {{game.id}}
     <button (click)="deleteGame(game)"> Thanos Snap</button>
   </li>
 </ul>
 
-<form [formGroup]="gameFormGroup" (ngSubmit)="addGame()">
-  <label>
-    Game Name:
-    <input type="text" formControl="name">
-  </label>
-
-  <input type="file"(change)="uploadFile($event)"></form>
