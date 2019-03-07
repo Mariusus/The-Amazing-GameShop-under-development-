@@ -15,7 +15,7 @@ export class FileService {
   }
 
   uploadImage(imageMetaData: ImageMetadata): Observable<FileMetaData> {
-    if(imageMetaData.imageBlob) {
+    if (imageMetaData.imageBlob) {
       const fileToUpload = new File([imageMetaData.imageBlob], imageMetaData.fileMeta.name,
         {type: imageMetaData.imageBlob.type});
       return this.upload(fileToUpload);

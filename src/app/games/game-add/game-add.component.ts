@@ -13,7 +13,7 @@ import {ImageMetadata} from '../../files/shared/image-metadata';
   styleUrls: ['./game-add.component.css']
 })
 export class GameAddComponent implements OnInit {
-  imageChangedEvent: File;
+  imageChangedEvent: any = '';
   croppedImage: any = '';
   gameFormGroup: FormGroup;
    croppedBlob: Blob;
@@ -60,7 +60,7 @@ this.imageChangedEvent.target.files && this.imageChangedEvent.target.files.lengh
     }
   };
 }
-    return undefined;
+return undefined;
   }
   uploadFile(event) {
     this.imageChangedEvent = event;
