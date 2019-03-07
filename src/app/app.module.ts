@@ -20,7 +20,6 @@ import {AngularFireStorage} from '@angular/fire/storage';
     BrowserModule,
     AngularFireStorage,
     AppRoutingModule,
-    GameRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],

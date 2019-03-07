@@ -5,6 +5,7 @@ import {GamesService} from '../games-service/games.service';
 import {FileService} from '../../files/files/shared/file.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ImageCroppedEvent} from 'ngx-image-cropper';
+import {ImageMetadata} from '../../files/shared/image-metadata';
 
 @Component({
   selector: 'app-game-add',
@@ -14,12 +15,12 @@ import {ImageCroppedEvent} from 'ngx-image-cropper';
 export class GameAddComponent implements OnInit {
   imageChangedEvent: File;
   croppedImage: any = '';
-  fileToUpload: File;
   gameFormGroup: FormGroup;
+   croppedBlob: Blob;
   constructor(private gs: GamesService,
               private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private fs: FileService) {this.gameFormGroup = new FormGroup({
+              private router: Router
+             ) {this.gameFormGroup = new FormGroup({
     name: new FormControl('')
   }); }
 
@@ -27,33 +28,48 @@ export class GameAddComponent implements OnInit {
   }
   addGame() {
     const gamedata = this.gameFormGroup.value;
-    if (this.fileToUpload) {
-      this.fs.upload(this.fileToUpload)
-        .pipe(
-          switchMap(metadata => {
-            gamedata.picturId = metadata.id;
-            return  this.gs.addGame(gamedata);
-          })
-        )
-        .subscribe(game => {
+    const fileBeforeCrop = this.imageChangedEvent.target.files[0];
+
+    const imageMeta: ImageMetadata = {
+     imageBlob: this.croppedBlob,
+     fileMeta: {
+       name: fileBeforeCrop.name,
+       type: 'image/png',
+       size: fileBeforeCrop.size
+     }
+   };
+    this.gs.addGameWithImage(
+      gamedata,
+      this.getMetaDataForImage(),
+    ).subscribe(game => {
           this.router.navigate(['../'],
             {relativeTo: this.activatedRoute});
           window.alert('game with id' + game.id + 'was made URYAA');
         });
+  }
+  private getMetaDataForImage(): ImageMetadata {
+if(this.imageChangedEvent && this.imageChangedEvent.target &&
+this.imageChangedEvent.target.files && this.imageChangedEvent.target.files.lenght > 0) {
+  const fileBeforeCrop = this.imageChangedEvent.target.files[0];
+  return {
+    imageBlob: this.croppedBlob,
+    fileMeta: {
+      name: fileBeforeCrop.name,
+      type: 'image/png',
+      size: fileBeforeCrop.size
     }
+  };
+}
+    return undefined;
   }
   uploadFile(event) {
     this.imageChangedEvent = event;
-    this.fileToUpload = event.target.files[0];
 
   }
   imageCropped(event: ImageCroppedEvent) {
     //preview
     this.croppedImage = event.base64;
-    //convertion for uploads
-    const fileBeforeCrop = this.imageChangedEvent.target.files[0];
-    this.fileToUpload = new File([event.file], fileBeforeCrop.name,
-      {type: fileBeforeCrop.type});
+    this.croppedBlob = event.file;
   }
 
 }
