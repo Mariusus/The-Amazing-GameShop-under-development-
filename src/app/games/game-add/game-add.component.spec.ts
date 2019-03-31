@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameAddComponent } from './game-add.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {ImageCropperModule} from 'ngx-image-cropper';
+import {RouterTestingModule} from '@angular/router/testing';
+import {GamesService} from '../games-service/games.service';
+import {Observable} from 'rxjs';
+import {Game} from '../shared/game.model';
 
 describe('GameAddComponent', () => {
   let component: GameAddComponent;
@@ -8,7 +14,13 @@ describe('GameAddComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GameAddComponent ]
+      declarations: [ GameAddComponent ],
+      imports: [ReactiveFormsModule,
+        ImageCropperModule,
+      RouterTestingModule],
+      providers: [
+        {provide: GamesService, useClass: GameServiceStub}
+      ]
     })
     .compileComponents();
   }));
@@ -23,3 +35,13 @@ describe('GameAddComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+class FileServiceStub {
+
+}
+
+class GameServiceStub {
+addGame(): Observable<Game> {
+ return this.addGame();
+}
+}

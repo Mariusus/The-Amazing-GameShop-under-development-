@@ -6,6 +6,7 @@ import {FileService} from '../../files/files/shared/file.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ImageCroppedEvent} from 'ngx-image-cropper';
 import {ImageMetadata} from '../../files/shared/image-metadata';
+import {Game} from '../shared/game.model';
 
 @Component({
   selector: 'app-game-add',
@@ -48,7 +49,7 @@ export class GameAddComponent implements OnInit {
         });
   }
   private getMetaDataForImage(): ImageMetadata {
-if(this.imageChangedEvent && this.imageChangedEvent.target &&
+if (this.imageChangedEvent && this.imageChangedEvent.target &&
 this.imageChangedEvent.target.files && this.imageChangedEvent.target.files.lenght > 0) {
   const fileBeforeCrop = this.imageChangedEvent.target.files[0];
   return {

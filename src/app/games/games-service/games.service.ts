@@ -6,6 +6,7 @@ import {map, switchMap} from 'rxjs/operators';
 import {promise} from 'selenium-webdriver';
 import {ImageMetadata} from '../../files/shared/image-metadata';
 import {FileService} from '../../files/files/shared/file.service';
+import {convertActionBinding} from '@angular/compiler/src/compiler_util/expression_converter';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,7 @@ export class GamesService {
       );
   }
 
+
   deleteGame(id: string): Observable<void> {
     return Observable.create(obs => {
       this.db.doc<Game>('games/' + id)
@@ -43,15 +45,16 @@ export class GamesService {
     });
     //this.db.doc<Game>('games/' + id).delete();
   }
+
   addGameWithImage(game: Game, imageMeta: ImageMetadata)
-  : Observable<Game> {
+    : Observable<Game> {
     return this.fs.uploadImage(imageMeta)
       .pipe(
-      switchMap(metadata => {
-        game.pictureId = metadata.id;
-        return  this.addGame(game);
-      })
-    );
+        switchMap(metadata => {
+          game.pictureId = metadata.id;
+          return this.addGame(game);
+        })
+      );
   }
 
   addGame(game: Game): Observable<Game> {
@@ -63,9 +66,8 @@ export class GamesService {
             pictureId: game.pictureId,
             description: game.description,
             genre: game.genre
-  }
-  )
-  ).pipe(
+          })
+    ).pipe(
       map(gameRef => {
         game.id = gameRef.id;
         return game;
